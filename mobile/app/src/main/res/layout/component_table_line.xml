@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_background"
+    android:gravity="top"> <!-- 添加顶端对齐 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/field_name"
+        android:layout_width="15dp"
+        android:paddingRight="10dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:gravity="end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"/> <!-- 添加左侧间距 -->
+
+    <TextView
+        android:id="@+id/field_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:textColor="@android:color/black"
+        android:gravity="start" />
+</LinearLayout>
+
+    </LinearLayout>

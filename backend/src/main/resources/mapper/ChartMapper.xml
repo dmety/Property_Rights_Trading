@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockexplore.mapper.ChartMapper">
+
+    <select id="getPieData" resultType="java.lang.Integer">
+        WITH kinds AS (
+            SELECT 'A' AS trans_kind
+            UNION
+            SELECT 'B'
+            UNION
+            SELECT 'C'
+            UNION
+            SELECT 'D'
+            UNION
+            SELECT 'E'
+        )
+        SELECT COUNT(t.trans_kind) AS count
+        FROM kinds k
+            LEFT JOIN `project` t ON k.trans_kind = t.trans_kind
+        GROUP BY k.trans_kind;
+    </select>
+
+    <select id="getTradeAmount" resultType="java.lang.Integer">
+        WITH kinds AS (
+            SELECT 'A' AS trans_kind
+            UNION
+            SELECT 'C'
+            UNION
+            SELECT 'B'
+            UNION
+            SELECT 'D'
+            UNION
+            SELECT 'E'
+        )
+        SELECT
+            COALESCE(SUM(t.sum_success_price), 0) AS total_amount
+        FROM kinds k
+                 LEFT JOIN `project` t
+                           ON k.trans_kind = t.trans_kind
+        GROUP BY k.trans_kind
+    </select>
+    <select id="getAllMoneyArea" resultType="com.blockexplore.model.MoneyAreaDTO">
+        SELECT
+        trans_kind,
+        sum_success_price,
+        area
+        FROM project
+        WHERE sum_success_price IS NOT NULL
+        AND area IS NOT NULL
+    </select>
+    <select id="getDashboard" resultType="com.blockexplore.model.CountMod">
+        SELECT
+            COUNT(*) AS total_count,
+            SUM(CASE WHEN project_status = '鉴证打印' THEN 1 ELSE 0 END) AS verified_count
+        FROM project;
+    </select>
+    <select id="getAllData" resultType="com.blockexplore.model.MoneyAreaDTO">
+        SELECT
+            COUNT(*) AS count,
+            SUM(sum_success_price) AS sumSuccessPrice,
+            SUM(area) AS area
+        FROM
+            project
+    </select>
+    <select id="getRadar" resultType="com.blockexplore.model.MoneyAreaDTO">
+        SELECT
+            trans_kind,
+            COALESCE(SUM(sum_success_price), 0) AS sum_success_price
+        FROM
+            project
+        GROUP BY
+            trans_kind
+        ORDER BY
+            trans_kind ASC;
+    </select>
+    <!--    <select id="getAllMoneyArea" resultType="map">-->
+<!--        SELECT-->
+<!--            CAST(COALESCE(sum_success_price, 0) AS SIGNED) AS amount,-->
+<!--            CAST(COALESCE(area, 0) AS SIGNED) AS area_code-->
+<!--        FROM project-->
+<!--        WHERE sum_success_price IS NOT NULL-->
+<!--          AND area IS NOT NULL-->
+<!--    </select>-->
+
+</mapper>

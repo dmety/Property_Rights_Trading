@@ -1,0 +1,143 @@
+package com.example.app.Frame;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.app.Utils.NewHttpRequests;
+import com.example.testforenv.R;
+import com.example.app.Adapter.MarkdownMessageAdapter;
+import com.example.app.components.Message;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class AiFragment extends Fragment {
+    private NewHttpRequests httpRequests;
+    private RecyclerView recyclerView;
+    private MarkdownMessageAdapter adapter;
+    private List<Message> messageList;
+    private EditText inputMessage;
+    private Button sendButton;
+    private ProgressBar progressBar;
+    private TextToSpeech textToSpeech;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_agent, container, false);
+        httpRequests = new NewHttpRequests();
+
+        // 初始化视图
+        recyclerView = view.findViewById(R.id.recyclerView);
+        inputMessage = view.findViewById(R.id.inputMessage);
+        sendButton = view.findViewById(R.id.sendButton);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        // 初始化消息列表和适配器
+        messageList = new ArrayList<>();
+        adapter = new MarkdownMessageAdapter(requireContext(), messageList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        // 初始化 TextToSpeech
+        textToSpeech = new TextToSpeech(requireContext(), status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                Log.d("TTS", "TTS 初始化成功");
+                int result = textToSpeech.setLanguage(Locale.getDefault());
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e("TTS", "语言包缺失或不支持");
+                }
+            } else {
+                Log.e("TTS", "TTS 初始化失败，错误码: " + status);
+                Toast.makeText(requireContext(), "TTS 初始化失败，请安装TTS引擎", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // 发送按钮点击事件
+        sendButton.setOnClickListener(v -> {
+            String message = inputMessage.getText().toString().trim();
+            if (!message.isEmpty()) {
+                // 添加用户消息到列表
+                messageList.add(new Message(message, true));
+                adapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messageList.size() - 1);
+                inputMessage.setText("");
+
+                // 显示加载状态
+                progressBar.setVisibility(View.VISIBLE);
+                sendButton.setEnabled(false);
+
+                // 获取 AI 回复
+                httpRequests.getAiResponse(message, new NewHttpRequests.AiResponseCallback() {
+                    @Override
+                    public void onResponse(String aiResponse) {
+                        requireActivity().runOnUiThread(() -> {
+                            // 隐藏加载状态
+                            progressBar.setVisibility(View.GONE);
+                            sendButton.setEnabled(true);
+
+                            // 清理 <think> 标签内容
+                            String cleanText = aiResponse.replaceAll("(?s)<think>.*?</think>", "");
+
+                            // 添加 AI 回复到列表
+                            messageList.add(new Message(cleanText, false));
+                            adapter.notifyDataSetChanged();
+                            recyclerView.smoothScrollToPosition(messageList.size() - 1);
+
+                            // 语音播报 AI 回复
+                            speakOut(cleanText);
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        requireActivity().runOnUiThread(() -> {
+                            // 隐藏加载状态
+                            progressBar.setVisibility(View.GONE);
+                            sendButton.setEnabled(true);
+
+                            // 显示错误消息
+                            messageList.add(new Message("Error: " + errorMessage, false));
+                            adapter.notifyDataSetChanged();
+                            recyclerView.smoothScrollToPosition(messageList.size() - 1);
+                        });
+                    }
+                });
+            }
+        });
+
+        return view;
+    }
+
+    // 语音播报方法
+    private void speakOut(String text) {
+        if (textToSpeech != null) {
+            textToSpeech.stop(); // 停止当前播报
+            textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null, "tts_ai_utterance");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        // 释放 TTS 资源
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+}

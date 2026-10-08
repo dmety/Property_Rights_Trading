@@ -1,0 +1,321 @@
+package com.example.app.Utils;
+
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.SynthesizerListener;
+
+/**
+ * 科大讯飞语音合成工具类（单例模式）
+ * 功能：提供语音播报和停止播报的核心方法
+ */
+public class XunfeiTtsUtil {
+    private static final String TAG = "XunfeiTtsUtil";
+    private static XunfeiTtsUtil instance;
+    private SpeechSynthesizer mTts;  // 语音合成核心类
+    private Context mContext;
+
+    // 私有构造方法
+    private XunfeiTtsUtil(Context context) {
+        this.mContext = context.getApplicationContext();
+        initTts();
+    }
+
+    /**
+     * 获取工具类实例（线程安全）
+     */
+    public static synchronized XunfeiTtsUtil getInstance(Context context) {
+        if (instance == null) {
+            instance = new XunfeiTtsUtil(context);
+        }
+        return instance;
+    }
+
+    /**
+     * 初始化语音合成
+     */
+    private void initTts() {
+        // 初始化SDK（需替换为你的真实APPID）
+        SpeechUtility.createUtility(mContext, SpeechConstant.APPID + "=239641be");
+
+        // 创建语音合成对象
+        mTts = SpeechSynthesizer.createSynthesizer(mContext, mInitListener);
+        if (mTts == null) {
+            showToast("语音合成对象创建失败");
+            return;
+        }
+
+        // 设置合成参数
+        setTtsParams();
+    }
+
+    /**
+     * 初始化监听器
+     */
+    private InitListener mInitListener = new InitListener() {
+        @Override
+        public void onInit(int code) {
+            Log.d(TAG, "初始化结果码：" + code);
+            if (code != ErrorCode.SUCCESS) {
+                showToast("初始化失败，错误码：" + code);
+            }
+        }
+    };
+
+    /**
+     * 设置语音合成参数
+     */
+    private void setTtsParams() {
+        // 清空现有参数
+        mTts.setParameter(SpeechConstant.PARAMS, null);
+
+        // 设置引擎类型（云端引擎）
+        mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
+
+        // 设置发音人（女声-小燕）
+        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
+
+        // 设置语速（范围0-100）
+        mTts.setParameter(SpeechConstant.SPEED, "50");
+
+        // 设置音调（范围0-100）
+        mTts.setParameter(SpeechConstant.PITCH, "50");
+
+        // 设置音量（范围0-100）
+        mTts.setParameter(SpeechConstant.VOLUME, "80");
+
+        // 设置音频流类型（3代表音乐媒体流）
+        mTts.setParameter(SpeechConstant.STREAM_TYPE, "3");
+
+        // 设置合成音频保存路径（需要存储权限）
+        mTts.setParameter(SpeechConstant.TTS_AUDIO_PATH,
+                Environment.getExternalStorageDirectory() + "/msc/tts.wav");
+    }
+
+    /**
+     * 开始语音播报
+     * @param text 需要播报的文本内容
+     * @param listener 合成状态监听器
+     */
+    public void speak(String text, SynthesizerListener listener) {
+        if (mTts == null) {
+            showToast("语音合成未初始化");
+            return;
+        }
+
+        // 开始合成并播报
+        int code = mTts.startSpeaking(text, listener);
+        if (code != ErrorCode.SUCCESS) {
+            showToast("语音合成失败，错误码：" + code);
+        }
+    }
+
+    /**
+     * 停止当前播报
+     */
+    public void stopSpeaking() {
+        if (mTts != null && mTts.isSpeaking()) {
+            mTts.stopSpeaking();
+        }
+    }
+
+    /**
+     * 释放资源（在退出应用时调用）
+     */
+    public void release() {
+        if (mTts != null) {
+            mTts.stopSpeaking();
+            mTts.destroy();
+        }
+        instance = null;
+    }
+
+    // 显示Toast工具方法
+    private void showToast(String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
+}
+
+
+
+
+/***************/
+package com.example.app.Frame;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.app.Utils.NewHttpRequests;
+import com.example.testforenv.R;
+import com.example.app.Adapter.MarkdownMessageAdapter;
+import com.example.app.Utils.XunfeiTtsUtil;
+import com.example.app.components.Message;
+import com.iflytek.cloud.SynthesizerListener;
+import com.iflytek.cloud.SpeechError;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AiFragment extends Fragment {
+    private NewHttpRequests httpRequests;
+    private RecyclerView recyclerView;
+    private MarkdownMessageAdapter adapter;
+    private List<Message> messageList;
+    private EditText inputMessage;
+    private Button sendButton;
+    private ProgressBar progressBar;
+    private XunfeiTtsUtil ttsUtil; // 替换为讯飞TTS工具类
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_agent, container, false);
+        httpRequests = new NewHttpRequests();
+
+        // 初始化视图
+        recyclerView = view.findViewById(R.id.recyclerView);
+        inputMessage = view.findViewById(R.id.inputMessage);
+        sendButton = view.findViewById(R.id.sendButton);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        // 初始化消息列表和适配器
+        messageList = new ArrayList<>();
+        adapter = new MarkdownMessageAdapter(requireContext(), messageList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        // 初始化讯飞语音合成
+        ttsUtil = XunfeiTtsUtil.getInstance(requireContext());
+
+        // 发送按钮点击事件
+        sendButton.setOnClickListener(v -> {
+            String message = inputMessage.getText().toString().trim();
+            if (!message.isEmpty()) {
+                // 添加用户消息到列表
+                messageList.add(new Message(message, true));
+                adapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messageList.size() - 1);
+                inputMessage.setText("");
+
+                // 显示加载状态
+                progressBar.setVisibility(View.VISIBLE);
+                sendButton.setEnabled(false);
+
+                // 获取 AI 回复
+                httpRequests.getAiResponse(message, new NewHttpRequests.AiResponseCallback() {
+                    @Override
+                    public void onResponse(String aiResponse) {
+                        requireActivity().runOnUiThread(() -> {
+                            // 隐藏加载状态
+                            progressBar.setVisibility(View.GONE);
+                            sendButton.setEnabled(true);
+
+                            // 清理 <think> 标签内容
+                            String cleanText = aiResponse.replaceAll("(?s)<think>.*?</think>", "");
+
+                            // 添加 AI 回复到列表
+                            messageList.add(new Message(cleanText, false));
+                            adapter.notifyDataSetChanged();
+                            recyclerView.smoothScrollToPosition(messageList.size() - 1);
+
+                            // 使用讯飞语音播报 AI 回复
+                            speakWithXunfei(cleanText);
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        requireActivity().runOnUiThread(() -> {
+                            // 隐藏加载状态
+                            progressBar.setVisibility(View.GONE);
+                            sendButton.setEnabled(true);
+
+                            // 显示错误消息
+                            messageList.add(new Message("Error: " + errorMessage, false));
+                            adapter.notifyDataSetChanged();
+                            recyclerView.smoothScrollToPosition(messageList.size() - 1);
+                        });
+                    }
+                });
+            }
+        });
+
+        return view;
+    }
+
+    /**
+     * 使用讯飞语音合成播报
+     */
+    private void speakWithXunfei(String text) {
+        if (ttsUtil != null) {
+            ttsUtil.speak(text, new SynthesizerListener() {
+                @Override
+                public void onSpeakBegin() {
+                    Log.d("XunfeiTTS", "开始播报");
+                }
+
+                @Override
+                public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
+                    // 合成进度回调
+                }
+
+                @Override
+                public void onSpeakPaused() {
+                    Log.d("XunfeiTTS", "播报暂停");
+                }
+
+                @Override
+                public void onSpeakResumed() {
+                    Log.d("XunfeiTTS", "播报继续");
+                }
+
+                @Override
+                public void onSpeakProgress(int percent, int beginPos, int endPos) {
+                    // 播放进度回调
+                }
+
+                @Override
+                public void onCompleted(SpeechError error) {
+                    if (error == null) {
+                        Log.d("XunfeiTTS", "播报完成");
+                    } else {
+                        Log.e("XunfeiTTS", "播报错误：" + error.getPlainDescription(true));
+                    }
+                }
+
+                @Override
+                public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+                    // 其他事件回调
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        // 释放讯飞TTS资源
+        if (ttsUtil != null) {
+            ttsUtil.release();
+        }
+        super.onDestroy();
+    }
+}

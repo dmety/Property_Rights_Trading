@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.cjxy.iotlink.mapper.DeviceDao">
+    <select id="getDeviceList" resultType="cn.edu.cjxy.iotlink.model.SysDevice">
+--         SELECT a.*, c.name as project_name FROM sys_device a LEFT JOIN sys_pro_dev b ON a.id=b.device_id LEFT JOIN sys_project c ON b.project_id=c.id
+select * from sys_device
+    </select>
+    <update id="updateDeviceStatus">
+        UPDATE sys_device SET status = #{status} WHERE id = #{id}
+    </update>
+    <update id="updateCode">
+        update sys_device set project_code = #{projectCode} WHERE name = '土壤氮磷钾传感器'
+    </update>
+    <update id="updateCP">
+        update sys_device set project_code = #{code},acquisition_point = #{point} where id = #{id}
+    </update>
+    <delete id="deleteDevice">
+        DELETE FROM sys_device WHERE id = #{id}
+    </delete>
+    <delete id="deleteDeviceData">
+        DELETE FROM sys_dev_data WHERE device_id = #{deviceId}
+    </delete>
+    <delete id="deleteProjectDevice">
+        DELETE FROM sys_pro_dev WHERE device_id = #{deviceId}
+    </delete>
+    <select id="getDeviceListByTaskId" resultType="cn.edu.cjxy.iotlink.model.SysDevice">
+        SELECT * FROM sys_device WHERE task_id = #{taskId} and type = '传感器设备'
+    </select>
+    <select id="getAllSensorDevices" resultType="cn.edu.cjxy.iotlink.model.SysDevice">
+        SELECT * FROM sys_device WHERE type = '传感器设备' ORDER BY id;
+    </select>
+    <select id="getDeviceUserList" resultType="com.blockexplore.model.User">
+        SELECT distinct a.* FROM users a, sys_device b WHERE a.id = b.user_id AND b.id =#{id}
+    </select>
+    <select id="getDeviceByNodeIdAndDevAddress" resultType="cn.edu.cjxy.iotlink.model.SysDevice">
+        SELECT * FROM sys_device WHERE node_id=#{nodeId} AND dev_address=#{devAddress}
+    </select>
+    <select id="selectByName" resultType="int">
+        select id FROM users where login_name = #{user}
+    </select>
+    <select id="queryCode" resultType="java.lang.String">
+
+    </select>
+    <select id="selectDevByName" resultType="cn.edu.cjxy.iotlink.model.SysDevice">
+        select * from sys_device WHERE user = #{name}
+    </select>
+
+</mapper>

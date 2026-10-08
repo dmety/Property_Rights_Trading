@@ -1,0 +1,12 @@
+<resources>
+    <string-array name="card_types">
+        <item>身份证</item>
+        <item>护照</item>
+        <item>其他证件</item>
+    </string-array>
+
+    <string-array name="price_units">
+        <item>元</item>
+        <item>元/亩/年</item>
+    </string-array>
+</resources>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white">
+
+    <!-- 导航栏 -->
+    <LinearLayout
+        android:id="@+id/nav_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/return_icon"
+            android:contentDescription="返回" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="我的凭证"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- 二维码区域 -->
+    <LinearLayout
+        android:id="@+id/qr_code_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/nav_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/qr_code_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/orcode"
+            android:contentDescription="二维码" />
+    </LinearLayout>
+
+    <!-- 信息卡片区域 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/info_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardElevation="16dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/qr_code_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <!-- 字段名和值的对齐区域 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="top">
+
+                <!-- 字段名 -->
+                <TextView
+                    android:id="@+id/field_name_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="姓名:"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:gravity="end" />
+
+                <!-- 字段值 -->
+                <TextView
+                    android:id="@+id/field_value_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="张三"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:layout_marginStart="16dp" />
+            </LinearLayout>
+
+            <!-- 字段名和值的对齐区域 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="top">
+
+                <!-- 字段名 -->
+                <TextView
+                    android:id="@+id/field_name_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="性别:"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:gravity="end" />
+
+                <!-- 字段值 -->
+                <TextView
+                    android:id="@+id/field_value_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="男"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:layout_marginStart="16dp" />
+            </LinearLayout>
+
+            <!-- 字段名和值的对齐区域 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="top">
+
+                <!-- 字段名 -->
+                <TextView
+                    android:id="@+id/field_name_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="身份证号:"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:gravity="end" />
+
+                <!-- 字段值 -->
+                <TextView
+                    android:id="@+id/field_value_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="4311************72"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:gravity="start"
+                    android:layout_marginStart="16dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

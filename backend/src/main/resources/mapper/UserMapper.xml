@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.blockexplore.mapper.UserDao">
+    <insert id="register">
+        INSERT INTO users(id,login_name,login_pass,organ_id,address,create_time,edit_time,id_card,role,email,phone)
+        VALUES(#{id},#{loginName},#{loginPass},#{organId},#{address},#{createTime},#{editTime},#{idCard},#{role},#{email},#{phone})
+    </insert>
+    <insert id="createUser">
+        INSERT INTO users(id,login_name,login_pass,organ_id,address,create_time,edit_time,id_card,role,email,phone)
+        VALUES(#{id},#{loginName},#{loginPass},#{organId},#{address},#{createTime},#{editTime},#{idCard},#{role},#{email},#{phone})
+    </insert>
+    <update id="init">
+        UPDATE users SET address = #{address}
+    </update>
+    <delete id="deleteUserByName">
+        DELETE FROM users WHERE id = #{userId}
+    </delete>
+    <select id="getUserById" resultType="com.blockexplore.model.User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+    <select id="login" resultType="com.blockexplore.model.User">
+        SELECT * FROM users WHERE login_name = #{loginName} AND login_pass = #{loginPass}
+    </select>
+
+    <select id="isUserExist" resultType="java.lang.Boolean">
+        SELECT COUNT(*) FROM users WHERE login_name = #{loginName}
+    </select>
+
+    <select id="getUserList" resultType="com.blockexplore.model.User">
+        SELECT * FROM users
+    </select>
+    <select id="getUserAddressById" resultType="java.lang.String">
+        SELECT address FROM users WHERE id = #{userId}
+    </select>
+    <select id="getAllId" resultType="java.lang.String">
+        SELECT id FROM users
+    </select>
+    <select id="androidLogin" resultType="java.lang.Boolean">
+        SELECT COUNT(*) FROM users where login_name = #{loginName} AND login_pass = #{loginPass}
+    </select>
+    <select id="getUserAddressByName" resultType="java.lang.String">
+        SELECT address FROM users WHERE login_name = #{loginName}
+    </select>
+    <select id="getUserByName" resultType="com.blockexplore.model.User">
+        SELECT * FROM users WHERE login_name = #{loginName}
+    </select>
+    <select id="getOrgNameById" resultType="java.lang.String">
+        select org_name from organ where id = #{s}
+    </select>
+    <select id="getIdByName" resultType="java.lang.String">
+        select id from users where login_name = #{s}
+    </select>
+</mapper>

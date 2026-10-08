@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockexplore.mapper.OrganDao">
+
+    <insert id="createOrgan">
+        INSERT INTO organ(id,org_type,create_time,edit_time,org_code,trans_kind,org_name)
+        VALUES(#{id},#{orgType},#{createTime},#{editTime},#{orgCode},#{transKind},#{orgName})
+    </insert>
+    <delete id="deleteOrgan">
+        DELETE FROM organ WHERE id = #{orgId}
+    </delete>
+    <select id="isOrganExist" resultType="java.lang.Boolean">
+        SELECT COUNT(*) FROM organ WHERE org_code = #{orgCode}
+    </select>
+    <select id="getAllOrganId" resultType="java.lang.String">
+        SELECT id FROM organ
+    </select>
+    <select id="getAllOrganByType" resultType="com.blockexplore.model.Organ">
+        SELECT * FROM organ WHERE trans_kind = #{transKind}
+    </select>
+</mapper>

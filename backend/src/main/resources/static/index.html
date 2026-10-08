@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.05);
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 4px 5px rgba(0, 0, 0, 0.4);
+        }
+        p {
+            color: #f0f0f0;
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            color: #ffffff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-5px);
+        }
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .modal-message {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            background: #27ae60;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-animation {
+            animation: pulse 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to Our Application</h1>
+    <p>这里是后端欢迎页 --- 数农攻坚队</p>
+    <button class="btn" id="initBtn">Get Started</button>
+</div>
+
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <div class="modal-icon">✓</div>
+        <h2 class="modal-title">操作成功</h2>
+        <p class="modal-message">部分系统用户初始化成功！</p>
+        <button class="modal-btn" id="closeModal">确定</button>
+    </div>
+</div>
+</body>
+
+<script>
+    // 获取按钮和模态框元素
+    const initBtn = document.getElementById('initBtn');
+    const successModal = document.getElementById('successModal');
+    const closeModal = document.getElementById('closeModal');
+
+    // 初始化按钮点击事件
+    initBtn.addEventListener('click', function() {
+        setTimeout(()=>{
+            // 显示成功模态框
+            successModal.classList.add('active');
+
+            // 添加成功动画
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.classList.add('success-animation');
+
+            // 动画结束后移除动画类
+            setTimeout(() => {
+                modalContent.classList.remove('success-animation');
+            }, 1000);
+        },500)
+    });
+
+    // 关闭模态框事件
+    closeModal.addEventListener('click', function() {
+        successModal.classList.remove('active');
+    });
+
+    // 点击模态框外部关闭
+    successModal.addEventListener('click', function(e) {
+        if (e.target === successModal) {
+            successModal.classList.remove('active');
+        }
+    });
+</script>
+</html>

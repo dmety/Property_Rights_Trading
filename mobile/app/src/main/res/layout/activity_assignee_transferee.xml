@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 主体内容放在 ScrollView 里 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 主体类型单选组 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="主体类型*"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rg_user_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_natural"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="自然人"
+                    android:textColor="#000000"/>
+
+                <RadioButton
+                    android:id="@+id/rb_legal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="法人"
+                    android:textColor="#000000"/>
+
+                <RadioButton
+                    android:id="@+id/rb_organization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="其他组织"
+                    android:textColor="#000000"/>
+            </RadioGroup>
+
+            <!-- 转出方名称 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="受让方名称*"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/et_transferor_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:hint="请输入名称"
+                android:textColorHint="#999999"/>
+
+            <!-- 申请时间 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="申请时间*"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/btn_apply_date"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/border_gray"
+                android:text="选择申请时间"
+                android:textColor="#000000"
+                style="@style/Widget.AppCompat.Button.Borderless"/>
+
+            <!-- 电子邮箱 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="电子邮箱"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="无"
+                android:textColor="#000000"
+                android:textColorHint="#999999"/>
+
+            <!-- 证件号码 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="证件号码*"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/et_card_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="18"
+                android:textColor="#000000"
+                android:hint="请输入证件号码"
+                android:textColorHint="#999999"/>
+
+            <!-- 联系电话 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="联系电话*"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/et_telephone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:textColor="#000000"
+                android:hint="请输入联系电话"
+                android:textColorHint="#999999"/>
+
+            <!-- 意向价格 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="意向价格*"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_will_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="numberDecimal"
+                    android:textColor="#000000"
+                    android:hint="请输入价格"
+                    android:textColorHint="#999999"
+                    android:background="@drawable/border_gray"/>
+
+                <Spinner
+                    android:id="@+id/sp_price_unit"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:entries="@array/price_units"
+                    android:background="@drawable/border_gray"/>
+            </LinearLayout>
+
+            <!-- 法人信息区域 -->
+            <LinearLayout
+                android:id="@+id/layout_legal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:padding="8dp"
+                android:background="@drawable/border_gray"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="法人基本情况"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="注册资本*"
+                    android:textColor="#000000"/>
+
+                <EditText
+                    android:id="@+id/et_registered_capital"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textColorHint="#999999"
+                    android:background="@drawable/border_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="法定代表人(负责人)"
+                    android:textColor="#000000"
+                    android:layout_marginTop="8dp"/>
+
+                <EditText
+                    android:id="@+id/et_legal_representative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textColorHint="#999999"
+                    android:background="@drawable/border_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="单位名称"
+                    android:textColor="#000000"
+                    android:layout_marginTop="8dp"/>
+
+                <EditText
+                    android:id="@+id/et_company_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textColorHint="#999999"
+                    android:background="@drawable/border_gray"/>
+            </LinearLayout>
+
+            <!-- 自然人信息区域 -->
+            <LinearLayout
+                android:id="@+id/layout_natural_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:padding="8dp"
+                android:background="@drawable/border_gray"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="自然人基本情况"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="证件类型*"
+                    android:textColor="#000000"/>
+
+                <Spinner
+                    android:id="@+id/sp_card_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:entries="@array/card_types"
+                    android:background="@drawable/border_gray"/>
+            </LinearLayout>
+
+            <!-- AI填报按钮 -->
+            <Button
+                android:id="@+id/btn_ai_fill"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:text="AI填报"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4CAF50"/>
+
+            <!-- 提交按钮 -->
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:text="提交"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6200EE"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 灰色半透明蒙层（初始隐藏） -->
+    <View
+        android:id="@+id/loading_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+    android:visibility="gone" />
+
+    <!-- 居中悬浮的加载圈 -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true"/>
+</FrameLayout>

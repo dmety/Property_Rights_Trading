@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockexplore.mapper.WorkDao">
+
+    <!--    select * from project WHERE project_status = "前置审批";-->
+    <select id="getReviewToDoList" resultType="com.blockexplore.callback.DoneToDoCallBack">
+        SELECT *
+        FROM project
+        WHERE project_status IN ('转出审核', '受让审核', '合同审核');
+
+    </select>
+    <select id="getReviewDoneList" resultType="com.blockexplore.model.History">
+        select * from history where user_id = #{userId}
+    </select>
+    <select id="getReToDoList" resultType="com.blockexplore.callback.DoneToDoCallBack">
+        SELECT *
+        FROM project
+        WHERE project_status IN ('受让受理', '合同签订');
+    </select>
+    <select id="getReDoneList" resultType="com.blockexplore.model.History">
+        select * from history where user_id = #{userId}
+    </select>
+    <select id="getAssuranceToDoList" resultType="com.blockexplore.callback.DoneToDoCallBack">
+        SELECT *
+        FROM project
+        WHERE project_status = '鉴证打印';
+
+    </select>
+    <select id="getAssuranceDoneList" resultType="com.blockexplore.model.History">
+        select * from history where user_id = #{userId}
+    </select>
+    <select id="getConfirmToDoList" resultType="com.blockexplore.callback.DoneToDoCallBack">
+        SELECT *
+        FROM project
+        WHERE project_status = '前置审批';
+
+    </select>
+    <select id="getConfirmDoneList" resultType="com.blockexplore.model.History">
+        select * from history where user_id = #{userId}
+    </select>
+</mapper>

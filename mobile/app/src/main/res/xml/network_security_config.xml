@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 允许所有域名使用 HTTP 明文流量 -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

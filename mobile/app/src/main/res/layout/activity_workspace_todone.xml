@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 标题和返回按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+        android:background="@drawable/return_icon"
+        android:contentDescription="返回" /> <!-- 内容描述 -->
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="交易项目消息"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:gravity="center" />
+    </LinearLayout>
+
+    <!-- 内容区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/workspace_info_background_bubble"
+        android:orientation="vertical">
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_project_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_project_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_transfer_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_right_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_right_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_certificate_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_ownership"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_land_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_land_nature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_transferor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_transferee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_apt_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_project_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.components.FieldItemView
+            android:id="@+id/field_up_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

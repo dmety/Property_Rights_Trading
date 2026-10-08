@@ -1,0 +1,109 @@
+import java.util.Properties
+
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream -> localProperties.load(stream) }
+}
+def buildConfigValue = { key, fallback ->
+    def value = localProperties.getProperty(key, fallback)
+    return "\"${value.replace("\\", "\\\\").replace("\"", "\\\"")}\""
+}
+
+android {
+    namespace 'com.example.testforenv'
+    compileSdk 34
+    buildFeatures {
+        buildConfig true
+    }
+    packagingOptions {
+        // 忽略所有 META-INF/io.netty.versions.properties 文件
+        exclude 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/INDEX.LIST'
+
+
+        // 如果你有其他需要忽略的文件，可以在这里添加
+        // exclude 'META-INF/some_other_file.properties'
+    }
+    defaultConfig {
+        applicationId "com.example.testforenv"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String", "API_BASE_URL", buildConfigValue("API_BASE_URL", "http://10.0.2.2:8080")
+        buildConfigField "String", "LOCAL_AI_BACKEND_URL", buildConfigValue("LOCAL_AI_BASE_URL", "http://10.0.2.2:11434/v1/chat/completions")
+        buildConfigField "String", "PYTHON_AI_BACKEND_URL", buildConfigValue("PYTHON_AI_BASE_URL", "http://10.0.2.2:8000")
+        buildConfigField "String", "CHAT_ANYWHERE_TOKEN", buildConfigValue("CHAT_ANYWHERE_TOKEN", "")
+        buildConfigField "String", "CHAT_ANYWHERE_URL", buildConfigValue("CHAT_ANYWHERE_URL", "")
+        buildConfigField "String", "XUNFEI_APP_ID", buildConfigValue("XUNFEI_APP_ID", "")
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation files('libs\\Msc.jar')
+    implementation libs.play.services.fido
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.android.car.ui:car-ui-lib:1.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'androidx.biometric:biometric:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.github.vipulasri:timelineview:1.1.5'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation "io.noties.markwon:core:4.6.2"
+    // fisco Android SDK
+    implementation 'org.fisco-bcos.android-sdk:fisco-bcos-android-sdk:1.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
+    implementation 'org.apache.commons:commons-lang3:3.1'
+    implementation 'commons-io:commons-io:2.4'
+    implementation 'com.squareup.okhttp3:okhttp:3.13.0'
+    implementation 'com.google.android.material:material:1.6.0'
+    // boun
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    //implementation 'org.bouncycastle:bcpkix-jdk15to18:1.60'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+
+
+
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.activity
+    implementation libs.constraintlayout
+    implementation libs.car.ui.lib
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}

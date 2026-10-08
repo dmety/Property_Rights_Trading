@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockexplore.mapper.ProjectDao">
+    <insert id="createProject">
+        INSERT INTO project(project_code,right_no,project_name,trans_kind,apt_user_id,apt_org_id,apt_date,create_time,edit_time,sum_success_price,project_status)
+        VALUES(#{projectCode},#{rightNo},#{projectName},#{transKind},#{aptUserId},#{aptOrganId},#{aptDate},#{createTime},#{editTime},#{sumSuccessPrice},#{projectStatus})
+    </insert>
+    <insert id="saveHistory">
+        INSERT INTO history(project_code,user_id,org_id,project_status,reject_flag,remark,done_time)
+        VALUES(#{projectCode},#{userId},#{orgId},#{projectStatus},#{rejectFlag},#{remark},#{doneTime})
+    </insert>
+    <update id="addTransfereeIdByCode">
+        UPDATE project SET transferee_id = #{transfereeCardNo} WHERE project_code = #{projectCode};
+    </update>
+    <update id="addTransferIdByCode">
+        UPDATE project SET transfer_id = #{transferorCardNo} WHERE project_code = #{projectCode};
+    </update>
+
+    <update id="saveContractCode">
+        UPDATE project SET contract_code = #{contractNo},sum_success_price = #{successPrice},area = #{contractRollOutArea} WHERE project_code = #{projectCode};
+    </update>
+
+    <update id="changeStatus">
+        UPDATE project SET project_status = #{projectStatus} WHERE project_code = #{projectCode};
+    </update>
+    <update id="setPubUpInit">
+        UPDATE project SET is_pub_success = 0,is_pub_up = 0 WHERE project_code = #{projectCode};
+    </update>
+    <update id="setIsPubUp">
+        UPDATE project SET is_pub_up = 0 WHERE project_code = #{projectCode};
+    </update>
+    <update id="updateIsPubUp">
+        UPDATE project SET is_pub_up = 1 WHERE project_code = #{projectCode};
+    </update>
+    <update id="deListProject">
+        UPDATE project SET is_pub_up = 2 WHERE project_code = #{projectCode};
+    </update>
+    <update id="setProjectStatus">
+        UPDATE project SET project_status = #{projectStatus} WHERE project_code = #{projectCode};
+    </update>
+    <update id="saveAppraisalCertInfo">
+        UPDATE project SET appraisal_cert_no = #{appraisalCertNo} WHERE project_code = #{projectCode};
+    </update>
+    <update id="updateAP">
+        update project set area = #{area},perimeter = #{perimeter} where project_code = #{projectCode};
+    </update>
+    <select id="getMaxRightNo" resultType="java.lang.String">
+        SELECT project_code
+        FROM project
+        ORDER BY CAST(SUBSTRING(project_code, LENGTH(project_code) - 4) AS UNSIGNED) DESC
+            LIMIT 1;
+    </select>
+    <select id="getAllProjectCode" resultType="java.lang.String">
+        SELECT project_code FROM `project`;
+    </select>
+    <select id="getNameByCode" resultType="java.lang.String">
+        SELECT project_name FROM `project` WHERE project_code = #{projectCode};
+    </select>
+    <select id="getProjectInfoByUserName" resultType="com.blockexplore.model.android.ProjectInfo">
+        SELECT project_code,project_name,trans_kind,apt_org_id,create_time FROM `project` WHERE apt_user_id = #{userName};
+    </select>
+    <select id="getProjectInfoByUserId" resultType="com.blockexplore.model.android.ProjectInfo">
+        SELECT project_code,project_name,trans_kind,project_status,apt_org_id,create_time FROM `project` WHERE apt_user_id = #{userId};
+    </select>
+    <select id="getMaxContractCode" resultType="java.lang.String">
+        SELECT contract_code
+        FROM project
+        ORDER BY CAST(SUBSTRING(contract_code, LENGTH(contract_code) - 4) AS UNSIGNED) DESC
+            LIMIT 1;
+    </select>
+    <select id="userNameByCode" resultType="java.lang.String">
+        select login_name from users where id = #{aptUserCode}
+    </select>
+    <select id="organNameByCode" resultType="java.lang.String">
+        select org_name from organ where id = #{aptOrganCode}
+    </select>
+    <select id="getOrgNameById" resultType="java.lang.String">
+        select org_name from organ where id = #{id}
+    </select>
+    <select id="getUserNameById" resultType="java.lang.String">
+        select login_name from users where id = #{id}
+    </select>
+    <select id="getUpContractCode" resultType="java.lang.String">
+        select project_code from `project` where is_pub_success = 1
+    </select>
+    <select id="getNotUpContractCode" resultType="java.lang.String">
+        select project_code from `project` where is_pub_success = 0
+    </select>
+    <select id="getNotPubUp" resultType="java.lang.String">
+        select project_code from `project` where is_pub_up = 0
+    </select>
+    <select id="IsPubUp" resultType="java.lang.String">
+        select project_code from `project` where is_pub_up = 1
+    </select>
+    <select id="getUserOrgId" resultType="java.lang.String">
+        select organ_id from users where id = #{userId}
+    </select>
+    <select id="getMaxAppraisaCertNo" resultType="java.lang.String">
+        SELECT appraisal_cert_no
+        FROM project
+        ORDER BY CAST(SUBSTRING(appraisal_cert_no, LENGTH(appraisal_cert_no) - 4) AS UNSIGNED) DESC
+            LIMIT 1;
+    </select>
+    <select id="getTypeByCode" resultType="java.lang.String">
+        select trans_kind from project where project_code = #{projectCode}
+    </select>
+
+    <select id="getProjectInfoByIdNumber" resultType="com.blockexplore.model.android.ProjectInfo">
+        SELECT project_code,right_no,project_name,trans_kind,project_status,apt_org_id,create_time
+        FROM `project`
+        WHERE transferee_id = #{idNumber} or transfer_id = #{idNumber};
+    </select>
+
+    <select id="selectByCode" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM project WHERE project_code = #{code}
+    </select>
+</mapper>

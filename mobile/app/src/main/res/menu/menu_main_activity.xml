@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_workspace"
+        android:title="工作台"
+        android:icon="@drawable/index" />
+    <item
+        android:id="@+id/main_projectinfo"
+        android:title="项目"
+        android:icon="@drawable/projectinfo" />
+    <item
+        android:id="@+id/main_agent"
+        android:title="Ai"
+        android:icon="@drawable/agent" />
+    <item
+        android:id="@+id/announcement"
+        android:title="公示公告"
+        android:icon="@drawable/announcement" />
+    <item
+        android:id="@+id/main_me"
+        android:title="我"
+        android:icon="@drawable/me" />
+</menu>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.cjxy.iotlink.mapper.DeviceDataDao">
+<!--    <insert id="addIPC">-->
+<!--        INSERT INTO sys_dev_data (device_id,collect_time,project_code,acquisition_point,data_name,data_value) VALUES (#{id},NULL,#{code},#{point},NULL,NULL);-->
+<!--    </insert>-->
+    <insert id="addPoint">
+        INSERT INTO sys_dev_data(device_id,collect_time,project_code,acquisition_point,data_name,data_value) VALUES(#{id},NULL,#{code},#{point},NULL,NULL);
+    </insert>
+    <update id="updatePront">
+        update sys_dev_data set acquisition_point = #{pront} where project_code=#{code} and acquisition_point IS NULL
+    </update>
+    <update id="updateByICP">
+        UPDATE sys_dev_data SET collect_time = #{time},data_name = #{dataName},data_value = #{dataValue} WHERE device_id = #{id} AND project_code = #{code} AND acquisition_point = #{point}
+    </update>
+    <update id="updateIPC">
+        update sys_dev_data set device_id = #{id} where project_code = #{code} and acquisition_point = #{point}
+    </update>
+    <delete id="deletePoint">
+        DELETE FROM sys_dev_data
+        WHERE acquisition_point = #{point}
+          AND project_code = #{code}
+    </delete>
+    <select id="getDeviceDataList" resultType="cn.edu.cjxy.iotlink.model.SysDevData">
+        SELECT * FROM (SELECT * FROM sys_dev_data where device_id = #{deviceId} order by collect_time desc limit 0, 100) t ORDER BY collect_time
+    </select>
+    <select id="selectByCode" resultType="cn.edu.cjxy.iotlink.model.SysDevData">
+        select * from sys_dev_data where project_code = #{projectCode}
+    </select>
+
+    <select id="selectByIC" resultType="cn.edu.cjxy.iotlink.model.SysDevData">
+        select * from sys_dev_data where device_id = #{id} and project_code = #{code}
+    </select>
+</mapper>

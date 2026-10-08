@@ -1,0 +1,7 @@
+# Copy this file to local.properties and fill in machine-specific values.
+API_BASE_URL=http://10.0.2.2:8080
+LOCAL_AI_BASE_URL=http://10.0.2.2:11434/v1/chat/completions
+PYTHON_AI_BASE_URL=http://10.0.2.2:8000
+CHAT_ANYWHERE_TOKEN=
+CHAT_ANYWHERE_URL=
+XUNFEI_APP_ID=

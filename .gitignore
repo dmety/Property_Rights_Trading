@@ -1,0 +1,38 @@
+# Original archives and unpacked vendor/runtime bundles
+*.zip
+*.rar
+*.7z
+third_party/
+reference-materials/
+python服务端/
+database/数据库/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+**/local.properties
+**/*.keystore
+**/*.jks
+
+# Java / Android build and IDE output
+**/target/
+**/build/
+**/.gradle/
+**/.idea/
+**/*.iml
+backend/qrcode/
+backend/iotlink-client-tcp*/
+mobile/app/libs/arm64-v8a/
+mobile/app/libs/armeabi-v7a/
+
+# Python cache and machine-specific model weights
+**/__pycache__/
+**/*.py[cod]
+python-services/pose/
+python-services/block-trade/asrMod/whisper/large-v3.pt
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/

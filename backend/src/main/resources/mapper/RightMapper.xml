@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockexplore.mapper.RightDao">
+
+    <insert id="saveRight">
+        INSERT INTO `right`(right_no,org_id,create_time,edit_time,right_name,right_owner,trans_kind,right_cert_code,right_card_id,block_number)
+        VALUES(#{rightNo},#{organId},#{createTime},#{editTime},#{rightName},#{rightOwner},#{transKind},#{rightCertCode},#{rightCardId},#{blockNumber})
+    </insert>
+    <update id="setPubUpSuccess">
+        UPDATE `project` SET is_pub_success = 1 WHERE project_code = #{projectCode}
+    </update>
+
+    <select id="getMaxRightNo" resultType="java.lang.String">
+        SELECT right_no
+        FROM `right`
+        ORDER BY CAST(SUBSTRING(right_no, LENGTH(right_no) - 4) AS UNSIGNED) DESC
+            LIMIT 1;
+    </select>
+    <select id="getOrganAllRightId" resultType="java.lang.String">
+        SELECT right_no FROM `right` WHERE org_id = #{organId}
+    </select>
+    <select id="getTypeRightCodeList" resultType="java.lang.String">
+        SELECT right_no FROM `right` WHERE trans_kind = #{transKind} and org_id= #{orgId}
+    </select>
+    <select id="getTransKindRightCodeList" resultType="java.lang.String">
+        select right_no from `right` where trans_kind = #{transKind}
+    </select>
+    <select id="getTypeByNo" resultType="java.lang.String">
+        SELECT trans_kind FROM `right` WHERE right_no = #{rightNo}
+    </select>
+    <select id="getOrgNameById" resultType="java.lang.String">
+        SELECT org_name FROM `organ` WHERE id = #{orgId}
+    </select>
+    <select id="getUserNameById" resultType="java.lang.String">
+        SELECT login_name FROM `users` WHERE id = #{userId}
+    </select>
+</mapper>

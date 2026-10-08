@@ -1,0 +1,8 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="8dp"/>
+    <solid android:color="#F0F0F0"/> <!-- 使用更灰色的白色 -->
+<!--    <stroke-->
+<!--        android:width="2dp"-->
+<!--        android:color="@android:color/holo_blue_dark"/> &lt;!&ndash; 边框颜色 &ndash;&gt;-->
+</shape>

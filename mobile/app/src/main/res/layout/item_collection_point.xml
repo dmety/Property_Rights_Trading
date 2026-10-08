@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingHorizontal="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:id="@+id/row_content">
+
+        <!-- 采集点 -->
+        <TextView
+            android:id="@+id/tv_point_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:textSize="14sp"
+            android:gravity="center"
+            tools:text="采集点A"/>
+
+        <!-- 氮含量 -->
+        <TextView
+            android:id="@+id/tv_nitrogen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:gravity="center"
+            tools:text="1.2%"/>
+
+        <!-- 磷含量 -->
+        <TextView
+            android:id="@+id/tv_phosphorus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:gravity="center"
+            tools:text="0.8%"/>
+
+        <!-- 钾含量 -->
+        <TextView
+            android:id="@+id/tv_potassium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:gravity="center"
+            tools:text="2.1%"/>
+
+        <!-- 采集时间 -->
+        <TextView
+            android:id="@+id/tv_collect_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:textSize="14sp"
+            android:gravity="center"
+            tools:text="2023-11-15"/>
+
+        <!-- 替换操作按钮为Spinner -->
+        <Spinner
+            android:id="@+id/spinner_devices"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/select_device"
+            android:background="@android:drawable/btn_dropdown"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+</RelativeLayout>

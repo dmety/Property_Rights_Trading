@@ -1,0 +1,9 @@
+<!-- res/drawable/timeline_marker.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:right="2dp" android:left="2dp">
+        <shape android:shape="oval">
+            <solid android:color="#4CAF50" /> <!-- 圆点的颜色，可以根据需求修改 -->
+            <size android:width="16dp" android:height="16dp" /> <!-- 圆点的大小 -->
+        </shape>
+    </item>
+</layer-list>
