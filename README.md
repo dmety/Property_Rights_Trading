@@ -12,7 +12,6 @@
 | `database/` | 不含演示用户数据的 MySQL 建表脚本 | MySQL |
 | `python-services/block-trade/` | 可选语音识别、AI 对话和 MCP 服务 | Python、FastAPI、FunASR、OpenAI-compatible API |
 
-原始压缩包已在工作目录解压。植物病害识别和人体姿态演示已整理成独立项目；EMQX 运行时、LoRa 配置工具和部署视频仍作为本地参考材料，不随本仓库提交。体积约 2.9 GB 的语音模型也不入库。
 
 ## 独立项目
 
