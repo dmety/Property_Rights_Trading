@@ -14,10 +14,10 @@
 
 | 原始包 | 本地解压位置 | 排除原因 |
 | --- | --- | --- |
-| `yolo.zip` | `third_party/yolo/` | 包含完整 YOLO 工具库、模型集合、数据集/标注工具和植物病害检测样例；没有发现它与产权交易后端或客户端的接口集成。若后续确认需要病害识别，应单独整理为视觉识别项目，并独立管理模型和数据集。 |
-| `python服务端/pose.zip` | `python-services/pose/` | 独立的人体姿态识别演示，不属于产权交易业务。 |
+| `yolo.zip` | `third_party/yolo/` | 原包包含完整 YOLO 工具库、模型集合、数据集和标注工具。仅将植物病害桌面识别源码整理到[独立项目](https://github.com/dmety/plant-disease-detection)；原始训练集、训练产物和大部分第三方工具仍不发布。 |
+| `python服务端/pose.zip` | `python-services/pose/` | 人体姿态示例整理到[独立项目](https://github.com/dmety/human-pose-demo)；去除原始人像样例、IDE 配置和超大模型权重。 |
 | `emqx-5.3.2-windows-amd64.zip` | `third_party/emqx-5.3.2-windows-amd64/` | 第三方 broker 的 Windows 运行发行包，不是本项目源码；需要时单独安装 EMQX。 |
 | `Lora设置软件V1.5.7.zip` | `third_party/lora-config-tool/` | 独立的 Windows 设备配置软件，不是本项目源码。原文件实际为 RAR 格式，虽扩展名为 `.zip`，已用兼容方式解压。 |
 | `AI部署.zip` | `reference-materials/AI-deployment/` | 仅含部署演示视频，不属于源代码。 |
 
-以上大型或独立内容保留在本机供后续拆分，不会被加入目标 Git 仓库。根目录 `.gitignore` 已排除这些解压目录、原始压缩包和大模型权重。
+EMQX、LoRa 配置工具、部署视频、完整训练集、训练输出和语音大模型保留在本机且不进入产权交易主仓库。两个独立项目的工作副本位于被根 `.gitignore` 排除的 `separate-projects/` 目录，并各自作为 Git 仓库维护。根目录 `.gitignore` 也排除了原始压缩包和大模型权重。

@@ -36,3 +36,4 @@ python-services/block-trade/asrMod/whisper/large-v3.pt
 .DS_Store
 Thumbs.db
 .vscode/
+separate-projects/
