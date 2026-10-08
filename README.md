@@ -50,8 +50,3 @@
 
 进入 `python-services/block-trade/`，按该目录 README 安装依赖。设置 `OPENAI_API_KEY`（或兼容服务的密钥）、模型服务地址以及本地 ASR 模型路径后，再运行 `python main.py`。默认模型文件不随仓库提交，详见该服务 README。
 
-## 配置与数据安全
-
-仓库不应保存数据库/MQTT 密码、邮件授权码、API token、链上私钥、个人数据或设备采集记录。对应配置已改为环境变量或 `mobile/local.properties`。请勿把真实密钥写回受版本控制的文件。
-
-压缩包来源、拆分判断和未纳入目标仓库的内容见 [`docs/source-inventory.md`](docs/source-inventory.md)。
